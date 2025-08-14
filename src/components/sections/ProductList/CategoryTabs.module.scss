@@ -1,0 +1,28 @@
+@import '../../../styles//variables';
+.tabsContainer {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  justify-content: center;
+  font-family: $font-body;
+ 
+
+}
+
+.tabButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 10px;
+  font-family: $font-body;
+  cursor: pointer;
+}
+
+.active {
+  background-color: #0070f3;
+  color: white;
+}
+
+.inactive {
+  background-color: #eaeaea;
+  color: #333;
+}
