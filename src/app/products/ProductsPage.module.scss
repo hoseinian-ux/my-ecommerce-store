@@ -1,0 +1,27 @@
+@import '../../styles/_variables.scss';
+.tabsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.tabButton {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-family: $font-body; 
+  font-size: large;
+  font-weight: bold;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+margin: 1rem;
+  &.active {
+    background: #0070f3;
+    color: #fff;
+  }
+
+  &.inactive {
+    background: #fff;
+    color: #333;
+  }
+}

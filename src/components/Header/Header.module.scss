@@ -1,0 +1,116 @@
+@import '@/styles/variables';
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+  font-family: $font-body;
+  width: 100%;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+   flex-wrap: wrap;
+}
+
+.menuToggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.nav {
+  display: flex;
+  gap: 1.5rem;
+
+  a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+
+    &:hover {
+      color: $primary;
+    }
+  }
+}
+
+.cartIcon {
+  position: relative;
+  color: #333;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover {
+    color: $primary;
+  }
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background: $primary;
+  color: rgb(250, 248, 248);
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  border-radius: 999px;
+}
+
+@media (max-width: 768px) {
+  .menuToggle {
+    display: block;
+  }
+
+  .nav {
+    display: none; // مخفی در حالت پیش‌فرض
+    position: absolute;
+    top: 100%; // زیر هدر
+    right: 0;
+    left: 0; // عرض کامل
+    background-color: #fff;
+    flex-direction: column;
+    gap: 0;
+    padding: 1rem;
+    border-top: 1px solid #eee;
+    z-index: 999;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a {
+    display: block;
+    width: 100%;
+     padding: 0.75rem 1rem;
+    text-align: right;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 1rem;
+    color: #333;
+    direction: rtl;
+  box-sizing: border-box;
+  }
+
+  .nav a:last-child {
+    border-bottom: none;
+  }
+}
+

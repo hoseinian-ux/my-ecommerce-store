@@ -1,0 +1,16 @@
+.input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.6rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: inherit;
+  margin-bottom: 1rem;
+  direction: rtl;
+
+  &:focus {
+    border-color: #1a73e8;
+    outline: none;
+  }
+}

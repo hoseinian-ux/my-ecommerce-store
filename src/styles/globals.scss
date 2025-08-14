@@ -1,0 +1,46 @@
+@import './variables';
+@import 'leaflet/dist/leaflet.css';
+@import 'keen-slider/keen-slider.min.css';
+
+/* ساختار کل صفحه */
+html, body, #__next {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#__next {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* حداقل ارتفاع برابر صفحه */
+}
+
+
+body {
+
+  font-family: $font-body;
+  background-color: $bg;
+  color: $text;
+  direction: rtl;
+}
+.pageTitle {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-top: 50px;
+  font-weight: bold;
+}
+h1{
+  font-size: xx-large;
+  font-weight: bold;
+}
+/* Wrapper اصلی */
+.root-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* محتوا فضای باقی مانده را می‌گیرد */
+.content-wrapper {
+  flex: 1;
+}

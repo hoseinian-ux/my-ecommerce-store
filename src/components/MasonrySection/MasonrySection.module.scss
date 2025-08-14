@@ -1,0 +1,74 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 200px); /* 6 ردیف 200px برای انعطاف بیشتر */
+  gap: 1rem;
+  grid-auto-flow: dense; /* پرکردن فشرده فضاهای خالی */
+}
+
+.item {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 100%;  /* حتما ارتفاع والد رو بگیریم */
+
+  .image {
+    position: absolute !important;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover .overlay {
+    opacity: 1;
+  }
+}
+
+/* اندازه ها */
+
+.big {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.wide {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.tall {
+  grid-column: span 1;
+  grid-row: span 3; /* ارتفاع 3 ردیف */
+}
+
+.small {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+.medium {
+  grid-column: span 1;
+  grid-row: span 1;
+}
