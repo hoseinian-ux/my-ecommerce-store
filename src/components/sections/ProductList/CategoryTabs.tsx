@@ -1,16 +1,16 @@
-"use client"
+"use client";
 
-import { useSearchParams, useRouter } from "next/navigation"
-import styles from "./CategoryTabs.module.scss"
+import { useSearchParams, useRouter } from "next/navigation";
+import styles from "./CategoryTabs.module.scss";
 
 type CategoryTabsProps = {
-  categories: { id: string; label: string }[]
-}
+  categories: { id: string; label: string }[];
+};
 
 export default function CategoryTabs({ categories }: CategoryTabsProps) {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const category = searchParams.get("category") || "all"
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const category = searchParams.get("category") || "all";
 
   return (
     <div className={styles.tabsContainer}>
@@ -18,11 +18,13 @@ export default function CategoryTabs({ categories }: CategoryTabsProps) {
         <button
           key={cat.id}
           onClick={() => router.push(`/products?category=${cat.id}`)}
-          className={`${styles.tabButton} ${cat.id === category ? styles.active : styles.inactive}`}
+          className={`${styles.tabButton} ${
+            cat.id === category ? styles.active : styles.inactive
+          }`}
         >
           {cat.label}
         </button>
       ))}
     </div>
-  )
+  );
 }

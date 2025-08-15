@@ -1,21 +1,21 @@
-
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
-
 import { getProducts } from "@/lib/getProducts";
 
-
-
 interface ProductsPageProps {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const category = typeof searchParams?.category === "string" ? searchParams.category : "all";
-  
+  // بررسی نوع category و مقداردهی پیش‌فرض
+  const category =
+    typeof searchParams?.category === "string" ? searchParams.category : "all";
+
+  // گرفتن محصولات از API
   const products = await getProducts(category);
 
+  // تعریف دسته‌بندی‌ها
   const categories = [
     { id: "all", label: "همه" },
     { id: "big", label: "بزرگ" },
@@ -27,7 +27,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <>
-      <Suspense fallback={<div style={{height:48}} />}>
+      {/* Suspense برای client component */}
+      <Suspense fallback={<div style={{ height: 48 }} />}>
         <CategoryTabs categories={categories} />
       </Suspense>
 
