@@ -3,19 +3,18 @@ import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
 
-// استفاده از تایپ رسمی Next.js
 interface ProductsPageProps {
-  searchParams?: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  // مقدار پیش‌فرض اگر category وجود نداشت
-  const category = searchParams?.category ?? "all";
+  const params = await searchParams;
 
-  // گرفتن محصولات از API
+  const category =
+    typeof params?.category === "string" ? params.category : "all";
+
   const products = await getProducts(category);
 
-  // لیست دسته‌بندی‌ها
   const categories = [
     { id: "all", label: "همه" },
     { id: "big", label: "بزرگ" },
@@ -27,11 +26,9 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
 
   return (
     <>
-      {/* Suspense برای Client Component */}
-      <Suspense fallback={<div style={{ height: 48 }} />} >
+      <Suspense fallback={<div style={{ height: 48 }} />}>
         <CategoryTabs categories={categories} />
       </Suspense>
-
       <ProductList products={products} />
     </>
   );
