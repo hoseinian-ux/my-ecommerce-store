@@ -1,8 +1,8 @@
-import { Product } from "@/types/product";
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
+import { Product } from "@/types/product";
 
 interface ProductsPageProps {
   searchParams?: { category?: string };
@@ -12,9 +12,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const category = searchParams?.category ?? "all";
 
   let products: Product[] = [];
-
   try {
-    products = await getProducts(category); // getProducts هم باید Promise<Product[]> برگردونه
+    products = await getProducts(category);
   } catch (error) {
     console.error("Error fetching products:", error);
   }
