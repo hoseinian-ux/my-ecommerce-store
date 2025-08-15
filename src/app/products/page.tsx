@@ -1,25 +1,11 @@
+
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
-import { Product } from "@/types/product";
+
+import { getProducts } from "@/lib/getProducts";
 
 
-export async function getProducts(category: string): Promise<Product[]> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL ||
-    (typeof window === "undefined"
-      ? process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000"
-      : "");
-
-  const res = await fetch(`${baseUrl}/api/products`, {
-    cache: "no-store",
-  });
-
-  const data: Product[] = await res.json();
-  return category === "all" ? data : data.filter((p) => p.category === category);
-}
 
 export default async function ProductsPage({ searchParams }: { searchParams: { category?: string } }) {
   const category = searchParams?.category ?? "all";
