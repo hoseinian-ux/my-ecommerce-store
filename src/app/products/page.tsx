@@ -1,19 +1,23 @@
+import { Product } from "@/types/product";
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
 
 interface ProductsPageProps {
-  searchParams: Promise<{ category?: string }>;
+  searchParams?: { category?: string };
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const params = await searchParams;
+  const category = searchParams?.category ?? "all";
 
-  const category =
-    typeof params?.category === "string" ? params.category : "all";
+  let products: Product[] = [];
 
-  const products = await getProducts(category);
+  try {
+    products = await getProducts(category); // getProducts هم باید Promise<Product[]> برگردونه
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
 
   const categories = [
     { id: "all", label: "همه" },
@@ -29,7 +33,14 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <Suspense fallback={<div style={{ height: 48 }} />}>
         <CategoryTabs categories={categories} />
       </Suspense>
-      <ProductList products={products} />
+
+      {products.length > 0 ? (
+        <ProductList products={products} />
+      ) : (
+        <div style={{ padding: 16, color: "red" }}>
+          خطا در بارگذاری محصولات. لاگ سرور را بررسی کنید.
+        </div>
+      )}
     </>
   );
 }
