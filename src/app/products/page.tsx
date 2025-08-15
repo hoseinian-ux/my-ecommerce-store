@@ -7,8 +7,13 @@ import { getProducts } from "@/lib/getProducts";
 
 
 
-export default async function ProductsPage({ searchParams }: { searchParams: { category?: string } }) {
-  const category = searchParams?.category ?? "all";
+interface ProductsPageProps {
+  searchParams?: Record<string, string | string[] | undefined>;
+}
+
+export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+  const category = typeof searchParams?.category === "string" ? searchParams.category : "all";
+  
   const products = await getProducts(category);
 
   const categories = [
