@@ -1,17 +1,29 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { Suspense } from "react";
+import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
-import styles from "./ProductsPage.module.scss";
-import { Product } from "@/types/product"; // ← اینو اضافه کنید
+import { Product } from "@/types/product";
 
-export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const searchParams = useSearchParams();
-  const router = useRouter();
 
-  const category = searchParams.get("category") || "all";
+export async function getProducts(category: string): Promise<Product[]> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_BASE_URL ||
+    (typeof window === "undefined"
+      ? process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
+        : "http://localhost:3000"
+      : "");
+
+  const res = await fetch(`${baseUrl}/api/products`, {
+    cache: "no-store",
+  });
+
+  const data: Product[] = await res.json();
+  return category === "all" ? data : data.filter((p) => p.category === category);
+}
+
+export default async function ProductsPage({ searchParams }: { searchParams: { category?: string } }) {
+  const category = searchParams?.category ?? "all";
+  const products = await getProducts(category);
 
   const categories = [
     { id: "all", label: "همه" },
@@ -22,37 +34,12 @@ export default function ProductsPage() {
     { id: "medium", label: "متوسط" },
   ];
 
-  useEffect(() => {
-    async function fetchProducts() {
-      const res = await fetch("/api/products");
-      const data: Product[] = await res.json(); // ← حالا همون نوع رو استفاده می‌کنیم
-
-      const filtered =
-        category === "all" ? data : data.filter((p) => p.category === category);
-
-      setProducts(filtered);
-    }
-
-    fetchProducts();
-  }, [category]);
-
   return (
     <>
-      <div className={styles.tabsContainer}>
-        {categories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => router.push(`/products?category=${cat.id}`)}
-            className={`${styles.tabButton} ${
-              cat.id === category ? styles.active : styles.inactive
-            }`}
-          >
-            {cat.label}
-          </button>
-        ))}
-      </div>
+      <Suspense fallback={<div style={{height:48}} />}>
+        <CategoryTabs categories={categories} />
+      </Suspense>
 
-      {/* لیست محصولات */}
       <ProductList products={products} />
     </>
   );
