@@ -2,13 +2,12 @@ import { Product } from "@/types/product";
 
 export async function getProducts(category: string): Promise<Product[]> {
   try {
-    // در Vercel متغیر محیطی VERCEL_URL اتوماتیک ست میشه
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000";
+    // اگه تو محیط پروDUCTION باشیم از دامنه پروژه استفاده می‌کنیم
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
     const res = await fetch(`${baseUrl}/api/products?category=${category}`, {
-      cache: "no-store", // برای جلوگیری از کش روی SSR
+      cache: "no-store", // تا همیشه داده تازه بیاره
     });
 
     if (!res.ok) {
@@ -19,6 +18,6 @@ export async function getProducts(category: string): Promise<Product[]> {
     return data;
   } catch (error) {
     console.error("Error in getProducts:", error);
-    return [];
+    return []; // اگه خطا بود آرایه خالی برگردون
   }
 }
