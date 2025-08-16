@@ -4,12 +4,11 @@ import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
 import { Product } from "@/types/product";
 
-interface ProductsPageProps {
+export default async function ProductsPage({
+  searchParams,
+}: {
   searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
+}) {
   const category =
     typeof searchParams?.category === "string" ? searchParams.category : "all";
 
