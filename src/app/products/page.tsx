@@ -7,7 +7,7 @@ import { Product } from "@/types/product";
 export default async function ProductsPage({
   searchParams,
 }: {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const category =
     typeof searchParams?.category === "string" ? searchParams.category : "all";
