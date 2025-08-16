@@ -1,4 +1,4 @@
-@import './variables';
+@use './variables' as *;
 @import 'leaflet/dist/leaflet.css';
 @import 'keen-slider/keen-slider.min.css';
 
