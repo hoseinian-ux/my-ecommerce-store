@@ -2,13 +2,13 @@ import { Product } from "@/types/product";
 
 export async function getProducts(category: string): Promise<Product[]> {
   try {
-    // استفاده از URL کامل برای fetch در سرور
+    // در Vercel متغیر محیطی VERCEL_URL اتوماتیک ست میشه
     const baseUrl = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "http://localhost:3000";
 
     const res = await fetch(`${baseUrl}/api/products?category=${category}`, {
-      cache: "no-store", // جلوگیری از کش در SSR
+      cache: "no-store", // برای جلوگیری از کش روی SSR
     });
 
     if (!res.ok) {
