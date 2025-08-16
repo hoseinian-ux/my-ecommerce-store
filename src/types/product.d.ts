@@ -3,5 +3,5 @@ export type Product = {
   title: string
   price: number
   image: string
-  category: "big" | "wide" | "tall" | "small" | "medium" | "all"
+  category: "big" | "wide" | "tall" | "small" | "medium"
 }

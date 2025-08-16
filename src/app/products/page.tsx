@@ -37,7 +37,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         <ProductList products={products} />
       ) : (
         <div style={{ padding: 16, color: "red" }}>
-          ⚠️ خطا در بارگذاری محصولات. لطفاً بعداً تلاش کنید.
+          خطا در بارگذاری محصولات. لاگ سرور را بررسی کنید.
         </div>
       )}
     </>
