@@ -1,29 +1,17 @@
-'use client'
-import { Suspense, useEffect, useState } from "react";
+// src/app/products/page.tsx
+import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
 import { Product } from "@/types/product";
 
-interface ProductsPageProps {
-  searchParams?: {
-    category?: string;
-  };
-}
-
-export default function ProductsPage({ searchParams }: ProductsPageProps) {
-  const category = searchParams?.category ?? "all";
-  const [products, setProducts] = useState<Product[]>([]);
-  const [error, setError] = useState(false);
-
-  useEffect(() => {
-    getProducts(category)
-      .then(setProducts)
-      .catch((err) => {
-        console.error(err);
-        setError(true);
-      });
-  }, [category]);
+export default async function ProductsPage() {
+  let products: Product[] = [];
+  try {
+    products = await getProducts("all"); // همه محصولات
+  } catch (err) {
+    console.error("Error fetching products:", err);
+  }
 
   const categories = [
     { id: "all", label: "همه" },
@@ -40,12 +28,12 @@ export default function ProductsPage({ searchParams }: ProductsPageProps) {
         <CategoryTabs categories={categories} />
       </Suspense>
 
-      {error ? (
+      {products.length > 0 ? (
+        <ProductList products={products} />
+      ) : (
         <div style={{ padding: 16, color: "red" }}>
           خطا در بارگذاری محصولات. لاگ سرور را بررسی کنید.
         </div>
-      ) : (
-        <ProductList products={products} />
       )}
     </>
   );
