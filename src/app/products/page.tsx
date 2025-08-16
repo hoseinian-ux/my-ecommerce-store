@@ -5,11 +5,13 @@ import { getProducts } from "@/lib/getProducts";
 import { Product } from "@/types/product";
 
 interface ProductsPageProps {
-  searchParams?: { category?: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
+
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const category = searchParams?.category ?? "all";
+  const category =
+    typeof searchParams?.category === "string" ? searchParams.category : "all";
 
   let products: Product[] = [];
   try {

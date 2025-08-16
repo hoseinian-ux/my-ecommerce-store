@@ -1,3 +1,5 @@
+//src\lib\getProducts.ts
+
 import { Product } from "@/types/product";
 
 export async function getProducts(category: string): Promise<Product[]> {
