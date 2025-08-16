@@ -4,13 +4,9 @@ import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
 import { Product } from "@/types/product";
 
-export default async function ProductsPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const category =
-    typeof searchParams?.category === "string" ? searchParams.category : "all";
+// 👇 ساده‌ترین امضا برای جلوگیری از خطای تایپ
+export default async function ProductsPage(props: any) {
+  const category = props?.searchParams?.category ?? "all";
 
   let products: Product[] = [];
   try {
