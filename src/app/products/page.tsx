@@ -1,19 +1,29 @@
-import { Suspense } from "react";
+'use client'
+import { Suspense, useEffect, useState } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
 import { getProducts } from "@/lib/getProducts";
 import { Product } from "@/types/product";
 
-// 👇 ساده‌ترین امضا برای جلوگیری از خطای تایپ
-export default async function ProductsPage(props: any) {
-  const category = props?.searchParams?.category ?? "all";
+interface ProductsPageProps {
+  searchParams?: {
+    category?: string;
+  };
+}
 
-  let products: Product[] = [];
-  try {
-    products = await getProducts(category);
-  } catch (error) {
-    console.error("Error fetching products:", error);
-  }
+export default function ProductsPage({ searchParams }: ProductsPageProps) {
+  const category = searchParams?.category ?? "all";
+  const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    getProducts(category)
+      .then(setProducts)
+      .catch((err) => {
+        console.error(err);
+        setError(true);
+      });
+  }, [category]);
 
   const categories = [
     { id: "all", label: "همه" },
@@ -30,12 +40,12 @@ export default async function ProductsPage(props: any) {
         <CategoryTabs categories={categories} />
       </Suspense>
 
-      {products.length > 0 ? (
-        <ProductList products={products} />
-      ) : (
+      {error ? (
         <div style={{ padding: 16, color: "red" }}>
           خطا در بارگذاری محصولات. لاگ سرور را بررسی کنید.
         </div>
+      ) : (
+        <ProductList products={products} />
       )}
     </>
   );
