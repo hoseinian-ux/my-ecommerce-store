@@ -1,17 +1,16 @@
 import { Product } from "@/types/product";
+import { sampleProducts } from "./sampleProducts";
 
 export async function getProducts(category: string): Promise<Product[]> {
   try {
-    // اگر تو لوکال هستی، از 3000 یا 3008 استفاده کن
+    // آدرس پایه: لوکال یا Vercel
     const baseUrl =
       process.env.NEXT_PUBLIC_SITE_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
-    const url = `${baseUrl}/api/products?category=${category}`;
-
-    console.log("Fetching products from:", url); // برای debug
-
-    const res = await fetch(url, { cache: "no-store" });
+    const res = await fetch(`${baseUrl}/api/products?category=${category}`, {
+      cache: "no-store", // SSR بدون کش
+    });
 
     if (!res.ok) {
       throw new Error(`Failed to fetch products: ${res.status}`);
@@ -20,7 +19,10 @@ export async function getProducts(category: string): Promise<Product[]> {
     const data: Product[] = await res.json();
     return data;
   } catch (error) {
-    console.error("Error in getProducts:", error);
-    return []; // اگر fetch شکست خورد، از آرایه خالی استفاده می‌کنیم
+    console.error("Error in getProducts, using sampleProducts:", error);
+    // اگر fetch شکست خورد، داده تستی برگردان
+    return sampleProducts.filter(
+      (p) => category === "all" || p.category === category
+    );
   }
 }

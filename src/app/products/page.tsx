@@ -5,25 +5,13 @@ import { getProducts } from "@/lib/getProducts";
 import { sampleProducts } from "@/lib/sampleProducts";
 import { Product } from "@/types/product";
 
-interface ProductsPageProps {
-  searchParams?: {
-    category?: string;
-  };
-}
+export const dynamic = "force-dynamic"; // SSR اجباری
 
-export const dynamic = "force-dynamic"; // SSR اجباری برای جلوگیری از خطای Dynamic server usage
-
-export default async function ProductsPage({}: ProductsPageProps) {
-  const category = "all"; // چون نمی‌خوایم سرچ دسته‌بندی داشته باشیم
-
+export default async function ProductsPage() {
   let products: Product[] = [];
-  try {
-    products = await getProducts(category);
 
-    // اگر fetch شکست خورد، از داده نمونه استفاده می‌کنیم
-    if (products.length === 0) {
-      products = sampleProducts;
-    }
+  try {
+    products = await getProducts("all"); // بدون دسته‌بندی
   } catch (error) {
     console.error("Fetch failed, using sampleProducts:", error);
     products = sampleProducts;
