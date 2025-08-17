@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
