@@ -3,7 +3,6 @@
 import { NextResponse } from "next/server";
 import { Product } from "@/types/product";
 
-// دیتای تستی (می‌تونی بعداً به دیتابیس یا API واقعی وصل کنی)
 const products: Product[] = [
   { id: 1, title: 'تلویزیون بزرگ', price: 5000000, image: '/images/img1.jpg', category: 'big' },
   { id: 2, title: 'میز پهن', price: 2000000, image: '/images/img2.jpg', category: 'wide' },
