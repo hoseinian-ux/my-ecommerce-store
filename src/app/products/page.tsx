@@ -1,21 +1,14 @@
+// src/app/products/page.tsx
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
-import { getProducts } from "@/lib/getProducts";
 import { sampleProducts } from "@/lib/sampleProducts";
 import { Product } from "@/types/product";
 
-export const dynamic = "force-dynamic"; // SSR اجباری
+export const dynamic = "force-dynamic"; // SSR اجباری، ولی الان مشکل fetch نداریم
 
-export default async function ProductsPage() {
-  let products: Product[] = [];
-
-  try {
-    products = await getProducts("all"); // بدون دسته‌بندی
-  } catch (error) {
-    console.error("Fetch failed, using sampleProducts:", error);
-    products = sampleProducts;
-  }
+export default function ProductsPage() {
+  const products: Product[] = sampleProducts; // داده مستقیم بدون fetch
 
   const categories = [
     { id: "all", label: "همه" },
