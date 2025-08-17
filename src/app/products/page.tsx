@@ -1,24 +1,9 @@
-export const dynamic = "force-dynamic";
-
 import { Suspense } from "react";
 import CategoryTabs from "@/components/sections/ProductList/CategoryTabs";
 import ProductList from "@/components/sections/ProductList/ProductList";
+import { getProducts } from "@/lib/getProducts";
+import { sampleProducts } from "@/lib/sampleProducts";
 import { Product } from "@/types/product";
-
-// نمونه داده محصول برای تست
-const sampleProducts: Product[] = [
-  { id: 1, title: 'تلویزیون بزرگ', price: 5000000, image: '/images/img1.jpg', category: 'big' },
-  { id: 2, title: 'میز پهن', price: 2000000, image: '/images/img2.jpg', category: 'wide' },
-  { id: 3, title: 'کمد قدی', price: 3500000, image: '/images/img3.jpg', category: 'tall' },
-  { id: 4, title: 'چراغ رومیزی', price: 800000, image: '/images/img4.jpg', category: 'small' },
-  { id: 5, title: 'صندلی متوسط', price: 1200000, image: '/images/img5.jpg', category: 'medium' },
-
- { id: 6, title: 'کفش بزرگ', price: 5000000, image: '/images/img1.jpg', category: 'big' },
-  { id: 7, title: 'کیف پهن', price: 2000000, image: '/images/img2.jpg', category: 'wide' },
-  { id: 8, title: 'لباس قدی', price: 3500000, image: '/images/img3.jpg', category: 'tall' },
-  { id: 9, title: 'چراغ دیواری', price: 800000, image: '/images/img4.jpg', category: 'small' },
-  { id: 10, title: 'صندلی طرحدار', price: 1200000, image: '/images/img5.jpg', category: 'medium' },
-];
 
 interface ProductsPageProps {
   searchParams?: {
@@ -26,15 +11,23 @@ interface ProductsPageProps {
   };
 }
 
-export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  // بدون نیاز به سرچ واقعی
-  const category = searchParams?.category ?? "all";
+export const dynamic = "force-dynamic"; // SSR اجباری برای جلوگیری از خطای Dynamic server usage
 
-  // فیلتر کردن نمونه داده‌ها بر اساس category
-  const products =
-    category === "all"
-      ? sampleProducts
-      : sampleProducts.filter((p) => p.category === category);
+export default async function ProductsPage({}: ProductsPageProps) {
+  const category = "all"; // چون نمی‌خوایم سرچ دسته‌بندی داشته باشیم
+
+  let products: Product[] = [];
+  try {
+    products = await getProducts(category);
+
+    // اگر fetch شکست خورد، از داده نمونه استفاده می‌کنیم
+    if (products.length === 0) {
+      products = sampleProducts;
+    }
+  } catch (error) {
+    console.error("Fetch failed, using sampleProducts:", error);
+    products = sampleProducts;
+  }
 
   const categories = [
     { id: "all", label: "همه" },
